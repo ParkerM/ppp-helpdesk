@@ -161,10 +161,6 @@ def tag(inp, chan='', db=None):
 
     if add:
         nick, subject = add.groups()
-        if nick.lower() == 'list':
-            return 'tag syntax has changed. try .tags or .tagged instead'
-        elif nick.lower() == 'del':
-            return 'tag syntax has changed. try ".untag %s" instead' % subject
         return add_tag(db, chan, sanitize(nick), sanitize(subject))
     else:
         tags = get_tags_string_by_nick(db, chan, inp)
