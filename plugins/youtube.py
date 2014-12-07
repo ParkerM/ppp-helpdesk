@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from builtins import str
 import re
 import time
-
+from calendar import timegm
 from util import hook, http, timesince
 
 
@@ -53,7 +53,7 @@ def get_video_description(vid_id, api_key):
         out += ' - \x02%s\x02 views' % group_int_digits(j['viewCount'])
 
     upload_time_since = timesince.timesince(
-        time.mktime(
+        timegm(
             time.strptime(j['uploaded'], "%Y-%m-%dT%H:%M:%S.000Z")
         )
     )
