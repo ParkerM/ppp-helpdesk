@@ -24,7 +24,9 @@ ignored_title_urls = [
     'rottentomatoes.com',
     'steampowered.com',
     'steamcommunity.com',
-    '//t.co'
+    '//t.co',
+    'youtu.be/',
+    'yooouuutuuube'
 ]
 
 def db_init(db):
