@@ -1,4 +1,4 @@
 lxml
 future
 praw
-python-amazon-product-api
+bottlenose
