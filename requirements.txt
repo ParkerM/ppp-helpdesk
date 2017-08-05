@@ -2,4 +2,3 @@ lxml
 future
 praw
 bottlenose
-bitly_api
