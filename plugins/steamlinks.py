@@ -62,7 +62,7 @@ def link_steam_app(match):
     #    version, name, value, port, port_specified, domain, domain_specified,
     #    domain_initial_dot, path, path_specified, secure, expiry, comment, comment_url, rest)
     age_gate_cookie = Cookie(
-        None, 'mature_content', '1', '80', '80', 'store.steampowered.com', 'store.steampowered.com',
+        None, 'birthtime', '1', '80', '80', 'store.steampowered.com', 'store.steampowered.com',
         None, '/', '/', False, '2147483600', None, None, None, None
     )
 
