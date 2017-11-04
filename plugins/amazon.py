@@ -34,6 +34,6 @@ def amazon(inp, api_key=None):
       new_price = None
 
     if new_price:
-      return "\x02%s\x02 - New \x02%s\x02 - https://amzn.com/%s?tag=%s" % (title, new_price, asin, api_key['ASSOCIATE_TAG'])
+      return "\x02%s\x02 - New \x02%s\x02 - https://amzn.com/%s?tag=%s" % (title, new_price, asin, api_key['associate_tag'])
     else:
-      return "\x02%s\x02 - https://amzn.com/%s?tag=%s" % (title, asin, api_key['ASSOCIATE_TAG'])
+      return "\x02%s\x02 - https://amzn.com/%s?tag=%s" % (title, asin, api_key['associate_tag'])
