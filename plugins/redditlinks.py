@@ -37,8 +37,8 @@ def format_subreddit(data):
     data['time_ago'] = timesince.timesince(data['created_utc'])
 
     return (
-        "\x02/r/{display_name} - {description:s}\x02 - {subscribers:d} subscribers "
-        "- created {time_ago:s} ago {nsfw_tag:s}{quarantine_tag:s}"
+        "\x02/r/{display_name}/x02 - {subscribers:d} subscribers "
+        "- created {time_ago:s} ago {nsfw_tag:s}{quarantine_tag:s} - {description:s}"
     ).format(**data)
 
     return data
