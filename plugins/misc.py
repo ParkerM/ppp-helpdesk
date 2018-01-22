@@ -42,6 +42,11 @@ def invite(paraml, conn=None):
 
 @hook.event('004')
 def onjoin(paraml, conn=None):
+    # set mode on self
+    mode = conn.user_mode
+    if mode:
+        conn.cmd('MODE', [conn.nick, mode])
+
     # identify to services
     nickserv_password = conn.nickserv_password
     nickserv_name = conn.nickserv_name
@@ -49,11 +54,6 @@ def onjoin(paraml, conn=None):
     if nickserv_password:
         conn.msg(nickserv_name, nickserv_command % nickserv_password)
         time.sleep(1)
-
-    # set mode on self
-    mode = conn.user_mode
-    if mode:
-        conn.cmd('MODE', [conn.nick, mode])
 
     conn.join_channels()
 
