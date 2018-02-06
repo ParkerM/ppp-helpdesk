@@ -1,10 +1,8 @@
-from __future__ import unicode_literals
-
 import random
 import re
-from urllib.parse import quote
 from time import strptime
 from calendar import timegm
+from urllib import quote
 from util import timesince
 
 from util import hook, http
@@ -16,17 +14,24 @@ def format_tweet(time, screen_name, text):
         )
     )
 
-    return "%s by \x02%s\x02: %s" % (since, screen_name, text)
+    colors = [
+      "00", "01", "02", "03", "04", "05", "06", "07",
+      "07", "09", "10", "11", "12", "13", "14", "15"
+    ]
+
+    text = "".join( "\x03%s%s" % (random.choice(colors) , random.choice([k.upper(), k ])) for k in text )
+
+    return "%s: %s" % (since, text)
+
 
 @hook.api_key('twitter')
 @hook.command
-def twitter(inp, api_key=None):
-    ".twitter <user>/<user> <n>/<id>/#<search>/#<search> <n> -- " \
-        "get <user>'s last/<n>th tweet/get tweet <id>/do <search>/get <n>th <search> result"
-
+def donald(inp, api_key=None):
     if not isinstance(api_key, dict) or any(key not in api_key for key in
                                             ('consumer', 'consumer_secret', 'access', 'access_secret')):
         return "error: api keys not set"
+
+    inp = "realDonaldTrump"
 
     getting_id = False
     doing_search = False
@@ -55,7 +60,7 @@ def twitter(inp, api_key=None):
 
     try:
         tweet = http.get_json(request_url, oauth=True, oauth_keys=api_key, tweet_mode="extended")
-    except http.HTTPError as e:
+    except http.HTTPError, e:
         errors = {400: 'bad request (ratelimited?)',
                   401: 'unauthorized',
                   403: 'forbidden',
@@ -93,10 +98,7 @@ def twitter(inp, api_key=None):
     screen_name = tweet["user"]["screen_name"]
     time = tweet["created_at"]
 
-    return format_tweet(time, screen_name, text)
+    reply_text = format_tweet(time, screen_name, text)
 
-
-@hook.api_key('twitter')
-@hook.regex(r'https?://(mobile\.)?twitter.com/(#!/)?([_0-9a-zA-Z]+)/status/(?P<id>\d+)')
-def show_tweet(match, api_key=None):
-    return twitter(match.group('id'), api_key)
+    for i in range(0, len(reply_text), 400):
+      reply(reply_text[ i : i + 400 ])
