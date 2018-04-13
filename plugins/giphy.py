@@ -1,7 +1,6 @@
 from util import http, hook
 
 @hook.api_key('giphy')
-@hook.command('giphy', autohelp=False)
 @hook.command('gif', autohelp=False)
 @hook.command(autohelp=False)
 def giphy(inp, api_key=None):
