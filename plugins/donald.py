@@ -26,7 +26,7 @@ def format_tweet(time, screen_name, text):
 
 @hook.api_key('twitter')
 @hook.command
-def donald(inp, api_key=None):
+def donald(inp, reply=None, api_key=None):
     if not isinstance(api_key, dict) or any(key not in api_key for key in
                                             ('consumer', 'consumer_secret', 'access', 'access_secret')):
         return "error: api keys not set"
