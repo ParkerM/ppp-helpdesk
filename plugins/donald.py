@@ -7,21 +7,22 @@ from util import timesince
 
 from util import hook, http
 
-def format_tweet(time, screen_name, text):
+def format_time(time):
     since = '%s ago' % timesince.timesince(
         timegm(
             strptime(time, '%a %b %d %H:%M:%S +0000 %Y')
         )
     )
 
+    return since
+
+def format_text(text):
     colors = [
       "00", "01", "02", "03", "04", "05", "06", "07",
       "07", "09", "10", "11", "12", "13", "14", "15"
     ]
 
-    text = "".join( "\x03%s%s" % (random.choice(colors) , random.choice([k.upper(), k ])) for k in text )
-
-    return "%s: %s" % (since, text)
+    return "".join( "\x03%s%s" % (random.choice(colors) , random.choice([k.upper(), k ])) for k in text )
 
 
 @hook.api_key('twitter')
@@ -98,7 +99,18 @@ def donald(inp, reply=None, api_key=None):
     screen_name = tweet["user"]["screen_name"]
     time = tweet["created_at"]
 
-    reply_text = format_tweet(time, screen_name, text)
+    reply_text = format_time(time)
 
-    for i in range(0, len(reply_text), 400):
-      reply(reply_text[ i : i + 400 ])
+    text_chunks = [ text[i : i + 10] for i in range(0, len(text), 10)]
+
+    for chunk in text_chunks:
+        formatted_chunk = format_text(chunk)
+
+        if len(reply_text) + len(formatted_chunk) > 420:
+            reply(reply_text)
+            reply_text = ''
+
+        reply_text += formatted_chunk
+
+    if len(reply_text) > 0:
+        reply(reply_text)
