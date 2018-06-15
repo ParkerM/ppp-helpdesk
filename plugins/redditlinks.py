@@ -14,8 +14,8 @@ def format_comment(data):
     data['time_ago'] = timesince.timesince(data['created_utc'])
 
     return (
-        "\x02{title:s}\x02 (\x0307{ups:d}\x0f|\x0312{downs:d}\x0f) "
-        "- {time_ago:s} ago by {author:s} to /r/{subreddit:s} - {num_comments:d} comments{nsfw_tag:s}"
+        u"\x02{title:s}\x02 (\x0307{ups:d}\x0f|\x0312{downs:d}\x0f) "
+        u"- {time_ago:s} ago by {author:s} to /r/{subreddit:s} - {num_comments:d} comments{nsfw_tag:s}"
     ).format(**data)
 
     return data
@@ -37,8 +37,8 @@ def format_subreddit(data):
     data['time_ago'] = timesince.timesince(data['created_utc'])
 
     return (
-        "\x02/r/{display_name}/x02 - {subscribers:d} subscribers "
-        "- created {time_ago:s} ago {nsfw_tag:s}{quarantine_tag:s} - {description:s}"
+        u"\x02/r/{display_name}/x02 - {subscribers:d} subscribers "
+        u"- created {time_ago:s} ago {nsfw_tag:s}{quarantine_tag:s} - {description:s}"
     ).format(**data)
 
     return data
