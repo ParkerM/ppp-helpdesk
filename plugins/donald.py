@@ -100,6 +100,7 @@ def donald(inp, reply=None, api_key=None):
     time = tweet["created_at"]
 
     reply_text = format_time(time)
+    reply_text += ' '
 
     text_chunks = [ text[i : i + 10] for i in range(0, len(text), 10)]
 
