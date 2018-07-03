@@ -16,13 +16,21 @@ def format_time(time):
 
     return since
 
-def format_text(text):
+def randomcase_text_except_url(text):
+    url = re.compile('(https://[^\s]+)', re.IGNORECASE)
+
+    return ''.join(t if url.match(t) else randomcase_text(t) for t in url.split(text))
+
+def randomcase_text(text):
+    return "".join( random.choice([k.upper(), k ]) for k in text )
+
+def rainbow_text(text):
     colors = [
       "00", "01", "02", "03", "04", "05", "06", "07",
       "07", "09", "10", "11", "12", "13", "14", "15"
     ]
 
-    return "".join( "\x03%s%s" % (random.choice(colors) , random.choice([k.upper(), k ])) for k in text )
+    return "".join( "\x03%s%s" % (random.choice(colors) , k) for k in text )
 
 
 @hook.api_key('twitter')
@@ -102,10 +110,12 @@ def donald(inp, reply=None, api_key=None):
     reply_text = format_time(time)
     reply_text += ' '
 
+    text = randomcase_text_except_url(text)
+
     text_chunks = [ text[i : i + 10] for i in range(0, len(text), 10)]
 
     for chunk in text_chunks:
-        formatted_chunk = format_text(chunk)
+        formatted_chunk = rainbow_text(chunk)
 
         if len(reply_text) + len(formatted_chunk) > 420:
             reply(reply_text)
