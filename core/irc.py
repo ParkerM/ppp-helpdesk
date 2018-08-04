@@ -64,6 +64,9 @@ class crlf_tcp(object):
             except socket.timeout:
                 print('timed out connecting to %s:%s' % (self.host, self.port))
                 time.sleep(60)
+            except socket.gaierror:
+                print 'problem getting address info for %s' % (self.host)
+                time.sleep(60)
             else:
                 break
         _thread.start_new_thread(self.recv_loop, ())
