@@ -6,11 +6,6 @@ from util import hook
 
 @hook.sieve
 def sieve_suite(bot, input, func, kind, args):
-    if input.command == 'PRIVMSG' and \
-       bot.config.get('ignorebots', True) and \
-       input.nick.lower()[-3:] == 'bot' and args.get('ignorebots', True):
-            return None
-
     if kind == "command":
         if input.trigger in bot.config.get('disabled_commands', []):
             return None
