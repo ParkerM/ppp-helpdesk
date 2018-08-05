@@ -9,6 +9,12 @@ from util import timesince
 
 from util import hook, http
 
+from lxml import html
+
+
+def text_content(html_string):
+    return html.fromstring(html_string).text_content()
+
 def format_tweet(time, screen_name, text):
     since = '%s ago' % timesince.timesince(
         timegm(
@@ -86,10 +92,12 @@ def twitter(inp, api_key=None):
 
     if 'retweeted_status' in tweet:
         rt = tweet["retweeted_status"]
-        rt_text = http.unescape(rt["full_text"]).replace('\n', ' ')
+        rt_text = text_content(rt["full_text"])
         text = "RT @%s %s" % (rt["user"]["screen_name"], rt_text)
     else:
-        text = http.unescape(tweet["full_text"]).replace('\n', ' ')
+        text = text_content(tweet["full_text"])\
+
+    text = text.replace('\n', ' ')
     screen_name = tweet["user"]["screen_name"]
     time = tweet["created_at"]
 

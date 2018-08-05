@@ -193,9 +193,3 @@ def oauth_sign_request(method, url, params, unsigned_request, consumer_secret, t
     signature = quote(binascii.b2a_base64(hash.digest())[:-1])
 
     return signature
-
-
-def unescape(s):
-    if not s.strip():
-        return s
-    return html.fromstring(s).text_content()
