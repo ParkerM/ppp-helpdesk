@@ -1,9 +1,5 @@
 from __future__ import unicode_literals
 
-import random
-import re
-from time import strptime, strftime
-from urllib import quote
 import unicodedata
 
 from util import http, hook
