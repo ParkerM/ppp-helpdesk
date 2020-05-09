@@ -65,7 +65,7 @@ class crlf_tcp(object):
                 print('timed out connecting to %s:%s' % (self.host, self.port))
                 time.sleep(60)
             except socket.gaierror:
-                print 'problem getting address info for %s' % (self.host)
+                print('problem getting address info for %s' % (self.host))
                 time.sleep(60)
             else:
                 break
@@ -111,8 +111,9 @@ class crlf_tcp(object):
     def send_loop(self):
         while True:
             line = self.oqueue.get().splitlines()[0][:500]
-            print(">>> %s" % line)
-            self.obuffer += line.encode('utf-8', 'replace') + b'\r\n'
+            line = line.encode('utf-8', 'replace')
+            print(b">>> {}".format(line))
+            self.obuffer += line + b'\r\n'
             while self.obuffer:
                 sent = self.socket.send(self.obuffer)
                 self.obuffer = self.obuffer[sent:]
