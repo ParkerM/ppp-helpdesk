@@ -28,6 +28,7 @@ def get_video_description(vid_id, api_key):
 
     published = j['snippet']['publishedAt'].replace('.000Z', 'Z')
     published = time.strptime(published, "%Y-%m-%dT%H:%M:%SZ")
+    published_since = timesince.timesince(timegm(published))
     published = time.strftime("%Y.%m.%d", published)
 
     views = group_int_digits(j['statistics']['viewCount'], ',')
@@ -52,15 +53,7 @@ def get_video_description(vid_id, api_key):
     if 'viewCount' in j:
         out += ' - \x02%s\x02 views' % group_int_digits(j['viewCount'])
 
-    upload_time_since = timesince.timesince(
-        timegm(
-            time.strptime(j['uploaded'], "%Y-%m-%dT%H:%M:%S.000Z")
-        )
-    )
-
-    upload_time = time.strptime(j['uploaded'], "%Y-%m-%dT%H:%M:%S.000Z")
-
-    out += ' - \x02%s\x02 ago by \x02%s\x02' % (upload_time_since, j['uploader'])
+    out += ' - \x02%s\x02 ago by \x02%s\x02' % (published_since, j['uploader'])
 
     if 'contentRating' in j:
         out += ' - \x034NSFW\x02'
