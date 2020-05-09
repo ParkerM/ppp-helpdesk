@@ -29,31 +29,39 @@ def get_video_description(vid_id, api_key):
     published = j['snippet']['publishedAt'].replace('.000Z', 'Z')
     published = time.strptime(published, "%Y-%m-%dT%H:%M:%SZ")
     published_since = timesince.timesince(timegm(published))
-    published = time.strftime("%Y.%m.%d", published)
 
-    views = group_int_digits(j['statistics']['viewCount'], ',')
-    likes = j['statistics'].get('likeCount', 0)
-    dislikes = j['statistics'].get('dislikeCount', 0)
+    views = 0
+    likes = 0
+    dislikes = 0
+
+    if 'statistics' in j:
+        views = group_int_digits(j['statistics'].get('viewCount', 0), ',')
+        likes = j['statistics'].get('likeCount', 0)
+        dislikes = j['statistics'].get('dislikeCount', 0)
+
+    channel_title = j['snippet']['channelTitle']
     title = j['snippet']['title']
     if 'localized' in j['snippet']:
         title = j['snippet']['localized'].get('title') or title
 
-    out = ('\x02{title}\x02 - length \x02{duration}\x02 - '
-           '{likes}\u2191{dislikes}\u2193 - '
-           '\x02{views}\x02 views - '
-           '\x02{snippet[channelTitle]}\x02 on \x02{published}\x02'
-          ).format(duration=duration, likes=likes, dislikes=dislikes, views=views, published=published, title=title, **j)
-
-    # TODO: figure out how to detect NSFW videos
+    out = (
+        '\x02{title}\x02 - length \x02{duration}\x02 - '
+        '{likes}\u2191{dislikes}\u2193 - '
+        '\x02{views}\x02 views - '
+        'published \x02{published_since}\x02 ago by \x02{channel_title}\x02'
+    ).format(
+        title=title,
+        duration=duration,
+        likes=likes,
+        dislikes=dislikes,
+        views=views,
+        published_since=published_since,
+        channel_title=channel_title
+    )
 
     if 'rating' in j:
         out += ' - rated \x02%.2f/5.0\x02 (%d)' % (j['rating'],
                                                    j['ratingCount'])
-
-    if 'viewCount' in j:
-        out += ' - \x02%s\x02 views' % group_int_digits(j['viewCount'])
-
-    out += ' - \x02%s\x02 ago by \x02%s\x02' % (published_since, j['uploader'])
 
     if 'contentRating' in j:
         out += ' - \x034NSFW\x02'
